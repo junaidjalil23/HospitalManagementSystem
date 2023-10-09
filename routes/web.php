@@ -1,8 +1,11 @@
 <?php
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\AppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +22,21 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+//Patient Routes
+Route::resource('patients', UserController::class);
+//Doctor Routes
+Route::resource('doctors', DoctorController::class);
+//Appointment Routes
+
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+
+
+Route::resource('appointments', AppointmentController::class);
+Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
+Route::post('appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+
 
     //Admin Routes 
 Route::middleware(['auth', 'admin'])->group(function () {

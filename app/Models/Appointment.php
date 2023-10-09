@@ -10,4 +10,13 @@ class Appointment extends Model
     use HasFactory;
     protected $table = 'appointments';
     protected $primaryKey = 'apt_id';
+    // protected $fillable = [
+    //     'created_at',
+    //     'email',
+    //     'contact',
+    //     'address',
+    //     'password',
+    //     'disease',
+    // ];
+
 }
