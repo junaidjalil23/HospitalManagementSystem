@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     public function index()
     {
         $patients = User::all();
-        return view('patients.index', compact('patients'));
+        $user = Auth::user();
+        return view('patients.index', compact('patients', 'user'));
+    }
+    public function home()  {
+        return view('patients.home');
     }
     public function create()
     {
@@ -60,9 +65,9 @@ class UserController extends Controller
                 'email',
                 Rule::unique('users', 'email'), 
             ],
-            'password' => 'required|string',
+            'password' => ['required', 'string', 'min:8'],
         ]);
-        
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
         // Create a new user
         $patient = User::create($validatedData);

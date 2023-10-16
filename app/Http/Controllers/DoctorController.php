@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
     public function index()
     {
         $doctors = Doctor::all();
-        return view('doctors.index', compact('doctors'));
+        $user = Auth::user();
+        return view('doctors.index', compact('doctors', 'user'));
+    }
+    public function home(){
+        return view('doctors.home');
     }
     public function show($id)
 {
@@ -60,7 +65,6 @@ public function store(Request $request)
     ]);
     
 
-    // Create a new user
     $patient = Doctor::create($validatedData);
 
 

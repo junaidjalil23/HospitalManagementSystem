@@ -19,7 +19,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    // public function isAdmin()
+    // {
+    //     return $this->role === 'admin';
+    // }
+     protected $fillable = [
         'patient_name',
         'email',
         'contact',
@@ -27,7 +31,15 @@ class User extends Authenticatable
         'password',
         'disease',
     ];
-
+    public function hasRole($role)
+    {
+        // Check if the user has the given role
+        return $this->role === $role;
+    }
+    public function appointment()
+    {
+        return $this->hasOne(Appointment::class, 'patient_id', 'patient_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

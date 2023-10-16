@@ -1,60 +1,83 @@
 <?php
 
-
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AppointmentController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+use App\Http\Controllers\AvailableHourController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SampleMail;
+// Default Laravel Auth routes
 Auth::routes();
 
-//Patient Routes
-Route::resource('patients', UserController::class);
-//Doctor Routes
-Route::resource('doctors', DoctorController::class);
-//Appointment Routes
+// Landing page
+use App\Http\Controllers\PageController;
 
-Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
-Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
-
-Route::resource('appointments', AppointmentController::class);
-Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
-Route::post('appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
-
-
-    //Admin Routes 
-Route::middleware(['auth', 'admin'])->group(function () {
-    // Route::get('/admin/dashboard', 'AdminController@index')->name('admin.dashboard');
-    // Route::get('/admin/patients', 'AdminController@viewPatients')->name('admin.viewPatients');
-    // Route::get('/admin/doctors', 'AdminController@viewDoctors')->name('admin.viewDoctors');
-    // Route::get('/admin/appointments', 'AdminController@viewAppointments')->name('admin.viewAppointments');
-    // Route::get('/admin/set-hours', 'AdminController@setDoctorHours')->name('admin.setDoctorHours');
-    // // Add more routes for update and delete actions
-    // //CRUD for patients
-    // Route::resource('/admin/patients', 'AdminController\PatientsController');
-    
-    // // CRUD for Doctors
-    // Route::resource('/admin/doctors', 'AdminController\DoctorsController');
-
-    // // Set Available Hours for Doctors
-    // Route::get('/admin/doctors/{doctor}/set-hours', 'AdminController\DoctorsController@setHoursForm')->name('doctors.setHoursForm');
-    // Route::post('/admin/doctors/{doctor}/set-hours', 'AdminController\DoctorsController@setHours')->name('doctors.setHours');
+// Test email route
+Route::get('/test-email', function () {
+    $to = 'hashim.tayyab.shah@vaival.com';
+    Mail::to($to)->send(new SampleMail());
+    return "Test email sent to $to";
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Authenticated user routes
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
+
+// Admin routes
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login']);
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+});
+
+//Patient dashboard
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/patients/home', [UserController::class , 'home'])->name('patients.home');
+});
+//Doctor Dashboard
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/doctors/home', [DoctorController::class , 'home'])->name('doctors.home');
+});
+Route::middleware(['web', 'auth', 'checkRole:admin'])->group(function () {
+    Route::resource('patients', UserController::class);
+    Route::resource('doctors', DoctorController::class);
+    Route::resource('appointments', AppointmentController::class);
+    Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
+    Route::post('appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::put('/available-hours/{id}/update-booking-status', [AvailableHourController::class, 'updateBookingStatus']);
+});
+
+// Patient routes
+Route::middleware(['web', 'auth', 'checkRole:patient'])->group(function () {
+    Route::resource('patients', UserController::class);
+    Route::resource('doctors', DoctorController::class);
+    Route::resource('appointments', AppointmentController::class);
+    
+    Route::post('appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::put('/available-hours/{id}/update-booking-status', [AvailableHourController::class, 'updateBookingStatus']);
+});
+
+// Doctor routes
+Route::middleware(['web', 'auth', 'checkRole:doctor'])->group(function () {
+    Route::resource('doctors', DoctorController::class);
+    Route::resource('patients', UserController::class)->only(['index', 'show']);
+    Route::resource('appointments', AppointmentController::class)->only(['index', 'show']);
+});
+ Route::resource('patients', UserController::class);
+    Route::resource('doctors', DoctorController::class);
+    Route::resource('appointments', AppointmentController::class);

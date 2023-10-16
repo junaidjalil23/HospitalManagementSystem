@@ -15,6 +15,13 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+  
+                    <div class="mt-3">
+                        <a href="{{ route('doctors.index') }}" class="btn btn-primary">Doctors lists</a><br><br>
+                        <a href="{{ route('patients.index') }}" class="btn btn-success">Patients lists</a><br><br>
+                        <a href="{{ route('appointments.index') }}" class="btn btn-primary">Appointment lists</a><br><br>
+                    </div>
+
                 </div>
             </div>
         </div>

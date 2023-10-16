@@ -19,5 +19,16 @@ class Doctor extends Model
         'specialization',
         'license_number',
     ];
-
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doc_id', 'doc_id');
+    }
+    public function availableHours()
+    {
+        return $this->hasMany(AvailableHour::class, 'doc_id');
+    }
 }
