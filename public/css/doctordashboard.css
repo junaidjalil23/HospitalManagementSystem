@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('docmain.jpg');
+    background-size: cover;
+
+    background-repeat: no-repeat;
+}
+.p-6 {
+    padding: 1.5rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+}
+
+button:hover {
+    background-color: red;
+}
+
+/* Add some spacing between buttons */
+button + div {
+    margin-left: 1rem;
+}

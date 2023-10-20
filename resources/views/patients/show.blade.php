@@ -18,14 +18,13 @@
     </div>
 
     <div class="mb-3">
-        @role('admin')
+
         <a href="{{ route('patients.edit', $patient->patient_id) }}" class="btn btn-warning">Edit</a>
         <form action="{{ route('patients.destroy', $patient->patient_id) }}" method="POST" style="display: inline;">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
-        @endrole
 
     </div>
     

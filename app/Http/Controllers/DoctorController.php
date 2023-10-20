@@ -6,6 +6,7 @@ use App\Models\Doctor;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -61,12 +62,19 @@ public function store(Request $request)
             Rule::unique('doctors', 'doc_email'), 
         ],
         'password' => 'required|string',
-
     ]);
-    
 
-    $patient = Doctor::create($validatedData);
+    $hashedPassword = Hash::make($validatedData['password']);
 
+    $doctor = Doctor::create([
+        'doc_name' => $validatedData['doc_name'],
+        'specialization' => $validatedData['specialization'],
+        'contact' => $validatedData['contact'],
+        'license_number' => $validatedData['license_number'],
+        'address' => $validatedData['address'],
+        'doc_email' => $validatedData['doc_email'],
+        'password' => $hashedPassword,
+    ]);
 
     return redirect()->route('doctors.index')->with('success', 'Doctor added successfully');
 

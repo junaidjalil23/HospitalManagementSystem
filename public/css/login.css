@@ -1,0 +1,44 @@
+
+
+body {
+  
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    background-image: url('Login.jpg');
+    background-size: cover;
+
+    background-repeat: no-repeat;
+}
+
+
+.card {
+    margin-top: 50px; 
+}
+
+.card-header {
+    background-color: darkblue;
+    color: white;
+}
+
+.form-check-label {
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-link {
+    color: #3490dc;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}

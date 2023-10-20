@@ -1,8 +1,8 @@
-<!-- resources/views/emails/doctor_appointment_notification.blade.php -->
-<p>Dear Dr. {{ $doc_name }},</p>
-<p>An appointment has been booked. Details:</p>
+
+<p>Dear {{ $doc_name }},</p>
+<p>An appointment has been Confirmed. Details:</p>
 <ul>
-    <li>Patient: {{ $patient_name }}</li>
-    <li>Appointment Date: {{ $appointment_date }}</li>
-    <!-- Add more details as needed -->
+    <li>Patient Name: {{ $patient_name }}</li>
+    <li>Appointment On: {{ $appointment_date }}</li>
+   
 </ul>

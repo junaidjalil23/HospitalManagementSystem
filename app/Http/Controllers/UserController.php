@@ -69,7 +69,7 @@ class UserController extends Controller
         ]);
         $validatedData['password'] = bcrypt($validatedData['password']);
 
-        // Create a new user
+   
         $patient = User::create($validatedData);
 
 

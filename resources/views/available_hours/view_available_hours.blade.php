@@ -1,0 +1,72 @@
+
+@extends('layouts.app')
+
+@section('content')
+<head>
+    <link href="{{ asset('css/table.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+</head>
+
+<div class="container">
+    <h2>View Available Hours</h2>
+    <section class="intro">
+        <div class="bg-image h-100" style="background-color: #f5f7fa;">
+            <div class="mask d-flex align-items-center h-100">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="card shadow-2-strong">
+                                <div class="card-body p-0">
+                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                                        <table class="table table-dark mb-0" id="availabletb">
+                                            <thead style="background-color: #393939;">
+                                                <tr class="text-uppercase text-success">
+                                                    <th>Doctor Name</th>
+                                                    <th>Date</th>
+                                                    <th>Today Available Hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($doctors as $doctor)
+                                                    <tr>
+                                                        <td>{{ $doctor->doc_name }}</td>
+                                                        <td>
+                                                            {{ \Carbon\Carbon::parse($doctor->start_time)->toDateString() }}
+                                                        </td>
+                                                        <td>
+                                                            <div class="available-hours">
+                                                                @foreach($doctor->availableHours as $availableHour)
+                                                                    @if (\Carbon\Carbon::parse($availableHour->start_time)->isToday())
+                                                                        <a href="{{ $availableHour->is_booked ? '#' : route('appointments.create', ['doctor' => $doctor->doc_id, 'hour' => $availableHour->id]) }}"
+                                                                            class="hour-slot {{ $availableHour->is_booked ? 'booked' : 'available' }}">
+                                                                            {{ \Carbon\Carbon::parse($availableHour->start_time)->format('h:i A') }}
+                                                                            -
+                                                                            {{ \Carbon\Carbon::parse($availableHour->end_time)->format('h:i A') }}
+                                                                        </a>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#availabletb').DataTable();
+        });
+    </script>
+@endsection

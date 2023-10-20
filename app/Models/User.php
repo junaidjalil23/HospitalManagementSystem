@@ -19,10 +19,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    // public function isAdmin()
-    // {
-    //     return $this->role === 'admin';
-    // }
+
      protected $fillable = [
         'patient_name',
         'email',
@@ -33,7 +30,7 @@ class User extends Authenticatable
     ];
     public function hasRole($role)
     {
-        // Check if the user has the given role
+ 
         return $this->role === $role;
     }
     public function appointment()

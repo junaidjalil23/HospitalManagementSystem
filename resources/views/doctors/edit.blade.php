@@ -1,4 +1,3 @@
-<!-- resources/views/doctors/edit.blade.php -->
 
 @extends('layouts.app')
 

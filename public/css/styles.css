@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #E3F6FC;
+  }
+  marquee {
+    color: red;
+    background-color: darkgrey;
+    padding: 10px;
+    white-space: nowrap;
+    animation: marquee 15s linear infinite;
+  }
+  .custom-navbar {
+    background-color: darkblue; 
+    color: white;
+}
+.custom-navbar .navbar-nav .nav-link {
+  color: white;
+}
+.custom-navbar .navbar-brand {
+  color: white;
+}
+
+  .nav-buttons li {
+    margin-right: 20px;
+  }
+
+  .nav-buttons a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  .nav-buttons a:hover {
+    color: red;
+  }
+
+  .content {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .content h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+
+  .content p {
+    font-size: 18px;
+
+  }
+  .center-image {
+    text-align: center;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px; 
+}
+.register-button {
+  display: inline-block;
+    background-color: rgb(129, 212, 237); 
+    color: white; /* White text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    text-decoration: none; /* Remove underline on anchor tag inside button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    font-size: 16px; /* Adjust font size */
+    transition: background-color 0.3s ease;
+}
+
+
+.register-button:hover {
+  background-color: red;
+}
+.buttons button {
+
+    background-color: #4caf50; 
+    color: white; 
+    padding: 10px 20px; 
+    text-decoration: none;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    /* Your hover styles go here */
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.buttons button a {
+    /* Style the link inside the button if needed */
+    text-decoration: none;
+    color: inherit;
+}
+@media only screen and (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-buttons {
+        margin-top: 10px;
+    }
+
+    .nav-buttons li {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .content,
+    .center-image {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .center-image img {
+        width: 100%;
+        height: auto;
+    }
+}

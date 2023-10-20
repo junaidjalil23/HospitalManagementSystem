@@ -27,9 +27,10 @@
             <label for="address" class="form-label">Address</label>
             <input type="text" class="form-control" id="address" name="address" value="{{ $patient->address }}" required>
         </div>
-        @role('admin')
+
+        
             <button type="submit" class="btn btn-primary">Update</button>
-        @endrole
+
     </form>
 </div>
 @endsection

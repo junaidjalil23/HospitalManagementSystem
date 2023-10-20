@@ -4,12 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Doctor;
+
 class AvailableHour extends Model
 {
     use HasFactory;
+
     protected $table = 'available_hours';
-    protected $primaryKey = 'is_booked';
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'doc_id',
+        'start_time',
+        'end_time',
+        'is_booked',
+    ];
 
     public function doctor()
     {

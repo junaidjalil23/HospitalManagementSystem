@@ -1,4 +1,3 @@
-<!-- admin/dashboard.blade.php -->
 
 @extends('layouts.app')
 

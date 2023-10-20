@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Doctor extends Model
+class Doctor extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
+    use \Illuminate\Auth\Authenticatable;
+    protected $guard = 'doctor';
     protected $table = 'doctors';
     protected $primaryKey = 'doc_id';
     protected $fillable = [
@@ -29,6 +32,6 @@ class Doctor extends Model
     }
     public function availableHours()
     {
-        return $this->hasMany(AvailableHour::class, 'doc_id');
+        return $this->hasMany(AvailableHour::class, 'doc_id', 'doc_id');
     }
 }

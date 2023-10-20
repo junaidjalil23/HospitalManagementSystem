@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -21,6 +22,13 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    protected $guard = 'web';
+
+    public function showDoctorLoginForm()
+{
+    return view('auth.doctor_login', ['url' => 'doctor']);
+}
+
 
     /**
      * Where to redirect users after login.
