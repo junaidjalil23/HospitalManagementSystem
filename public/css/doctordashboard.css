@@ -5,6 +5,7 @@ body{
     background-size: cover;
 
     background-repeat: no-repeat;
+    
 }
 .p-6 {
     padding: 1.5rem;
@@ -37,7 +38,21 @@ button:hover {
     background-color: red;
 }
 
-/* Add some spacing between buttons */
+
 button + div {
     margin-left: 1rem;
+}
+@media only screen and (max-width: 600px) {
+    body {
+        background-size: cover;
+    }
+
+    .flex {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
 }
