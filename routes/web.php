@@ -68,6 +68,7 @@ Route::middleware(['web', 'auth', 'checkRole:admin'])->group(function () {
     Route::get('/available-hours/view', [AvailableHourController::class, 'viewAvailableHours'])->name('available-hours.view');
     // Route for storing the created available hours
     Route::post('/available-hours/store', [AvailableHourController::class, 'store'])->name('available-hours.store');
+Route::post('/available-hours/store', [AvailableHourController::class, 'store'])->name('available-hours.store');
 
     Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
     Route::post('appointments/cancel/{id}', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
@@ -84,7 +85,7 @@ Route::middleware(['web', 'auth', 'checkRole:patient'])->group(function () {
     Route::resource('available-hours', AvailableHourController::class);
     Route::get('/available-hours/view', [AvailableHourController::class, 'viewAvailableHours'])->name('available-hours.view');
     Route::get('/get-available-hours/{doctorId}/{date}', [AppointmentController::class, 'getAvailableHours']);
-    
+    Route::post('/available-hours/store', [AvailableHourController::class, 'store'])->name('available-hours.store');    
 
 
     Route::get('/get-doctors/{department}', [AppointmentController::class, 'getDoctors']);

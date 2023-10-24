@@ -26,14 +26,14 @@ class AvailableHourController extends Controller
     {
       
         $currentDate = now()->toDateString();
-    AvailableHour::create([
+        $availableHour = AvailableHour::create([
         'doc_id' => $request->input('doc_id'),
         'start_time' => "$currentDate {$request->input('start_time')}:00", 
         'end_time' => "$currentDate {$request->input('end_time')}:00",   
         'is_booked' => false,
     ]);
-
-    return redirect()->route('available-hours.create')->with('success', 'Available hours created successfully.');
+    return response()->json($availableHour, 201);
+    // return redirect()->route('available-hours.create')->with('success', 'Available hours created successfully.');
 }
 
 public function viewAvailableHours()

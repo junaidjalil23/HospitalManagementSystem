@@ -39,9 +39,9 @@
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
    
-    @role('admin')
+
         <button type="submit" class="btn btn-primary">Save</button>
-    @endrole
+
     </form>
 </div>
 @endsection
