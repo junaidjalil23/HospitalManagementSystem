@@ -4,6 +4,7 @@ body {
     background-image: url('patient1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .center-text {
