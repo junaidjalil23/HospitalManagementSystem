@@ -56,10 +56,6 @@
                             @csrf
                             <button type="submit" class="btn btn-success">Confirm</button>
                         </form>
-                        <form action="{{ route('appointments.cancel', $appointment->apt_id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-warning">Cancel</button>
-                        </form>
                         <form action="{{ route('appointments.destroy', $appointment->apt_id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')

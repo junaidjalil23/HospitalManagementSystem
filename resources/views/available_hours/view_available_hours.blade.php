@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -6,7 +5,6 @@
     <link href="{{ asset('css/table.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-
 </head>
 
 <div class="container">
@@ -19,33 +17,33 @@
                         <div class="col-12">
                             <div class="card shadow-2-strong">
                                 <div class="card-body p-0">
-                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                                    <div class="mb-3">
+                                        <label for="selectedDate" class="form-label">Please Select the Date</label>
+                                        <input type="date" class="form-control" id="selectedDate" onchange="updateAvailableHours()">
+                                    </div>
+                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px; display: none;">
                                         <table class="table table-dark mb-0" id="availabletb">
                                             <thead style="background-color: #393939;">
                                                 <tr class="text-uppercase text-success">
                                                     <th>Doctor Name</th>
-                                                    <th>Date</th>
-                                                    <th>Today Available Hours</th>
+                                                    <th>Available Hours</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($doctors as $doctor)
                                                     <tr>
                                                         <td>{{ $doctor->doc_name }}</td>
-                                                        <td>
-                                                            {{ \Carbon\Carbon::parse($doctor->start_time)->toDateString() }}
-                                                        </td>
+
                                                         <td>
                                                             <div class="available-hours">
                                                                 @foreach($doctor->availableHours as $availableHour)
-                                                                    @if (\Carbon\Carbon::parse($availableHour->start_time)->isToday())
-                                                                        <a href="{{ $availableHour->is_booked ? '#' : route('appointments.create', ['doctor' => $doctor->doc_id, 'hour' => $availableHour->id]) }}"
-                                                                            class="hour-slot {{ $availableHour->is_booked ? 'booked' : 'available' }}">
-                                                                            {{ \Carbon\Carbon::parse($availableHour->start_time)->format('h:i A') }}
-                                                                            -
-                                                                            {{ \Carbon\Carbon::parse($availableHour->end_time)->format('h:i A') }}
-                                                                        </a>
-                                                                    @endif
+                                                                    <a href="{{ $availableHour->is_booked ? '#' : route('appointments.create', ['doctor' => $doctor->doc_id, 'hour' => $availableHour->id]) }}"
+                                                                        class="hour-slot {{ $availableHour->is_booked ? 'booked' : 'available' }}"
+                                                                        data-date="{{ \Carbon\Carbon::parse($availableHour->start_time)->toDateString() }}">
+                                                                        {{ \Carbon\Carbon::parse($availableHour->start_time)->format('h:i A') }}
+                                                                        -
+                                                                        {{ \Carbon\Carbon::parse($availableHour->end_time)->format('h:i A') }}
+                                                                    </a>
                                                                 @endforeach
                                                             </div>
                                                         </td>
@@ -63,10 +61,31 @@
         </div>
     </section>
 </div>
+
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#availabletb').DataTable();
+<script>
+    $(document).ready(function () {
+        $('#availabletb').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": [1, 2]  } 
+        ]
+    });
+    });
+
+    function updateAvailableHours() {
+        let selectedDate = document.getElementById('selectedDate').value;
+
+        // If no date is selected, use the current date
+        selectedDate = selectedDate || new Date().toISOString().split('T')[0];
+
+        let availableHours = document.querySelectorAll('.hour-slot');
+        availableHours.forEach(function (hour) {
+            let hourDate = hour.getAttribute('data-date');
+            hour.style.display = hourDate === selectedDate ? 'inline-block' : 'none';
         });
-    </script>
+
+        // Show the table once the date is selected
+        document.querySelector('.table-scroll').style.display = 'block';
+    }
+</script>
 @endsection

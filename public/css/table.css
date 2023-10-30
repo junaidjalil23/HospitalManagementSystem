@@ -14,7 +14,7 @@ table td, table th {
 
 .table-scroll {
   border-radius: .5rem;
-  background: linear-gradient(to right, #393939, #f5f7fa);
+  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
   padding: 10px;
   margin: -10px;
 }
