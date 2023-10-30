@@ -53,10 +53,16 @@ class AppointmentController extends Controller
     
     public function destroy($id)
 {
+        // Find the appointment by ID
+        $appointment = Appointment::find($id);
 
-    $appointment = Appointment::findOrFail($id);
+        if (!$appointment) {
+            // Handle the case where the appointment is not found
+            abort(404);
+        }
 
-    $appointment->delete();
+        // Perform the deletion
+        $appointment->delete();
 
     return redirect()->route('appointments.index')->with('success', 'Appointment deleted successfully');
 }

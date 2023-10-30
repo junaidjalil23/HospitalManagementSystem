@@ -42,12 +42,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-// Admin routes
-Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login']);
-Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-});
+
 
 //Patient dashboard
 Route::middleware(['web', 'auth'])->group(function () {
