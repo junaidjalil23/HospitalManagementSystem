@@ -33,6 +33,7 @@ class User extends Authenticatable
  
         return $this->role === $role;
     }
+    
     public function appointment()
     {
         return $this->hasOne(Appointment::class, 'patient_id', 'patient_id');

@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\Auth\DoctorLoginController;
+use App\Http\Controllers\DoctorLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AvailableHourController;
+use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SampleMail;
@@ -20,9 +21,10 @@ use App\Http\Controllers\PageController;
 // Default Laravel Auth routes
 Auth::routes();
 Route::get('/doctor/login', [DoctorLoginController::class, 'showLoginForm'])->name('doctor.login');
-Route::post('/doctor/login', [DoctorLoginController::class, 'doctorLogin']);
+Route::post('/doctor/login', [DoctorLoginController::class, 'login']);
+Route::post('/doctor/logout', [DoctorLoginController::class, 'logout'])->name('doctor.logout')->middleware('auth:doctor');
 
-
+Route::get('/doctors/listing', [DoctorController::class, 'Listing'])->name('doctors.listing');
 Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome');
@@ -40,18 +42,34 @@ Route::get('/test-email', function () {
 // Authenticated user routes
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/patients/home', [UserController::class , 'home'])->name('patients.home');
+    Route::get('/appointments/listing', [AppointmentController::class, 'listing'])->name('appointments.listing');
+
+    Route::resource('appointments', AppointmentController::class);
+    Route::get('/patients/listing', [UserController::class, 'Listing'])->name('patients.listing');
+ 
+});
+  // Doctor routes... wk
+Route::middleware(['web', 'auth:doctor'])->group(function () {
+  
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+
+    Route::get('/doctors/home', [DoctorDashboardController::class, 'index'])->name('doctors.home');
+
+
+
+    Route::get('/appointments/listing', [AppointmentController::class, 'listing'])->name('appointments.listing');
+
+
+    // Add other doctor-specific routes here
 });
 
-
-
-//Patient dashboard
+//Patient dashboard wk
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/patients/home', [UserController::class , 'home'])->name('patients.home');
+
 });
-//Doctor Dashboard
-Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('/doctors/home', [DoctorController::class , 'home'])->name('doctors.home');
-});
+
 Route::middleware(['web', 'auth', 'checkRole:admin'])->group(function () {
     Route::resource('patients', UserController::class);
     Route::resource('doctors', DoctorController::class);
@@ -75,6 +93,7 @@ Route::post('/available-hours/store', [AvailableHourController::class, 'store'])
 // Patient routes
 Route::middleware(['web', 'auth', 'checkRole:patient'])->group(function () {
     Route::resource('patients', UserController::class);
+    Route::get('/patients/home', [UserController::class , 'home'])->name('patients.home');
     Route::resource('doctors', DoctorController::class);
     Route::resource('appointments', AppointmentController::class);
     Route::resource('available-hours', AvailableHourController::class);
@@ -94,7 +113,7 @@ Route::middleware(['web', 'auth', 'checkRole:doctor'])->group(function () {
     Route::resource('doctors', DoctorController::class);
     Route::resource('patients', UserController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class)->only(['index', 'show']);
-    Route::get('/doctors/home', [DoctorController::class , 'home'])->name('doctors.home');
+
 });
  Route::resource('patients', UserController::class);
     Route::resource('doctors', DoctorController::class);

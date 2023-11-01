@@ -14,6 +14,7 @@ class UserController extends Controller
         $user = Auth::user();
         return view('patients.index', compact('patients', 'user'));
     }
+
     public function home()  {
         return view('patients.home');
     }

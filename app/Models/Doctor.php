@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Doctor extends Authenticatable
 {
     use HasFactory, Notifiable;
-    use \Illuminate\Auth\Authenticatable;
+
     protected $guard = 'doctor';
     protected $table = 'doctors';
     protected $primaryKey = 'doc_id';
@@ -22,10 +22,15 @@ class Doctor extends Authenticatable
         'specialization',
         'license_number',
     ];
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+    
     public function hasRole($role)
     {
         return $this->role === $role;
     }
+    
     public function appointments()
     {
         return $this->hasMany(Appointment::class, 'doc_id', 'doc_id');
@@ -34,4 +39,5 @@ class Doctor extends Authenticatable
     {
         return $this->hasMany(AvailableHour::class, 'doc_id', 'doc_id');
     }
+
 }

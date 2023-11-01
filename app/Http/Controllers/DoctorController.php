@@ -12,9 +12,15 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        $doctors = Doctor::all();
+        $doctor = auth()->guard('doctor')->user();
+         $doctors = Doctor::all();  // Fetch all doctors if needed
         $user = Auth::user();
-        return view('doctors.index', compact('doctors', 'user'));
+        return view('doctors.index', compact('doctors', 'user','doctor'));
+    }
+    public function Listing()
+    {
+        $doctors = Doctor::all();
+        return view('doctors.listing', compact('doctors'));
     }
     public function home(){
         return view('doctors.home');

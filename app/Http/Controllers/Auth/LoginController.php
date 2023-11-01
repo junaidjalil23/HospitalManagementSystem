@@ -24,11 +24,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
     protected $guard = 'web';
 
-    public function showDoctorLoginForm()
-{
-    return view('auth.doctor_login', ['url' => 'doctor']);
-}
-
 
     /**
      * Where to redirect users after login.
@@ -42,7 +37,8 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function authenticated(Request $request, $user)
+
+     protected function authenticated(Request $request, $user)
 {
 
     if ($user->hasRole('admin')) {

@@ -7,6 +7,7 @@ use App\Mail\PatientAppointmentConfirmation;
 use App\Models\Appointment;
 use App\Models\AvailableHour;
 use App\Models\Doctor;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +18,12 @@ class AppointmentController extends Controller
     {
         $appointments = Appointment::all();
         return view('appointments.index', compact('appointments'));
+    }
+    public function listing()
+    {
+        $appointments = Appointment::all();
+
+    return view('appointments.listing', compact('appointments'));
     }
     public function confirm($id)
     {

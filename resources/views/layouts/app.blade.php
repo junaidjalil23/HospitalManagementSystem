@@ -36,7 +36,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <!-- Left Side Of Navbar -->
+                  <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
        
                         <li class="nav-item">
@@ -45,13 +45,8 @@
                         <li class="nav-item">
                         <a class="nav-link" href="{{ route('contact') }}">{{ __('Contact Us') }}</a>        
                         </li>
-  
-            @auth
-            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('doctor'))
-                        <li class="nav-item">
-                        <a class="nav-link" href="{{ route('patients.index') }}">{{ __('Patients List') }}</a>        
-                        </li>              
-            @endif
+                        
+                        @auth
                         @if(auth()->user()->hasRole('admin'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('available-hours.create') }}">{{ __('Set Available Hours') }}</a>
@@ -68,68 +63,79 @@
                         </li>
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('doctors.index') }}">{{ __('Doctors List') }}</a>
+                            <a class="nav-link" href="{{ route('doctors.listing') }}">{{ __('View Doctors List') }}</a>
                         </li>
                         @if(auth()->user()->hasRole('admin'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('appointments.index') }}">{{ __('Appointment List') }}</a>
                         </li>
                         @endif
-                    </ul>                    
-            @endauth
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        @auth
                         @if(auth()->user()->hasRole('patient'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('patients.home') }}">{{ __('Dashboard') }}</a>        
                         </li>
                         @endif
-                        @if(auth()->user()->hasRole('doctor'))
-                         <li class="nav-item">
-                        <a class="nav-link" href="{{ route('doctors.home') }}">{{ __('Dashboard') }}</a>        
-                        </li>
-                        @endif
-                        @if(auth()->user()->hasRole('admin'))
+
+                         @if(auth()->user()->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>        
                         </li>
                         @endif
-                        @endauth
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                    </ul>                    
+            @endauth
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{  Auth::user()->patient_name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
+                   <!-- Right Side Of Navbar -->
+                   <ul class="navbar-nav ms-auto">
+                        @auth('doctor')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('doctors.home') }}">{{ __('Dashboard') }}</a>
                             </li>
-                        @endguest
+                            <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ auth('doctor')->user()->doc_name }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('doctor.logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('doctor.logout') }}" method="POST" class="d-none">
+                                @csrf
+                                </form>
+                            </li>
+                        @else
+                            <!-- Authentication Links -->
+                            @guest
+                                @if (Route::has('login'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('doctor.login') }}">{{ __('Doctor Login') }}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    </li>
+                                @endif
+                                @if (Route::has('register'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    </li>
+                                @endif
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{  auth()->user()->patient_name }}
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @endguest
+                        @endauth
                     </ul>
                 </div>
             </div>

@@ -7,13 +7,14 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
 </head>
+@auth
     <div class="container">
         <div class="d-flex justify-content-end mb-3">
         @if(auth()->user()->hasRole('admin'))
             <a href="{{ route('doctors.create') }}" class="btn btn-primary">Add New Doctor</a>
         @endif
         </div>
-        @if(auth()->check() && (auth()->user()->hasRole('doctor') || auth()->user()->hasRole('admin') || auth()->user()->hasRole('patient'))) 
+        @if(auth()->check() && (auth()->user()->hasRole('doctor') || auth()->guard('doctor')->check() || auth()->user()->hasRole('admin') || auth()->user()->hasRole('patient')))
         <h1>Doctors List</h1>
         <section class="intro">
   <div class="bg-image h-100" style="background-color: #f5f7fa;">
@@ -69,6 +70,7 @@
       </div>
     </div>
   </div>
+
 </section>
 
     </div>
@@ -78,4 +80,5 @@
             $('#doctorsTable').DataTable();
         });
     </script>
+      @endauth
     @endsection

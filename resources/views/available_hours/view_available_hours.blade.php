@@ -33,7 +33,6 @@
                                                 @foreach($doctors as $doctor)
                                                     <tr>
                                                         <td>{{ $doctor->doc_name }}</td>
-
                                                         <td>
                                                             <div class="available-hours">
                                                                 @foreach($doctor->availableHours as $availableHour)

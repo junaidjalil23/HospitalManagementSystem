@@ -7,6 +7,7 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
 </head>
+@auth
 <div class="container">
     <div class="d-flex justify-content-end mb-3">
     
@@ -82,4 +83,5 @@
             $('#patientsTable').DataTable();
         });
     </script>
+    @endauth
 @endsection
