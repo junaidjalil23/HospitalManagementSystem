@@ -42,7 +42,8 @@
         <p>An appointment has been confirmed. Details:</p>
         <ul>
             <li><strong>Patient Name:</strong> {{ $patient_name }}</li>
-            <li><strong>Appointment On:</strong> {{ $appointment_date }}</li>
+            <li><strong>Appointment Created on:</strong> {{ $appointment_date }}</li>
+            <li><strong>Booked slot:</strong> {{ $start_time }} {{ $end_time }} </li>
         </ul>
     </div>
 </body>

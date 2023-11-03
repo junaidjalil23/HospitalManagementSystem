@@ -47,7 +47,10 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::resource('appointments', AppointmentController::class);
     Route::get('/patients/listing', [UserController::class, 'Listing'])->name('patients.listing');
- 
+
+    // Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+
+
 });
   // Doctor routes... wk
 Route::middleware(['web', 'auth:doctor'])->group(function () {
@@ -67,6 +70,8 @@ Route::middleware(['web', 'auth:doctor'])->group(function () {
 //Patient dashboard wk
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/patients/home', [UserController::class , 'home'])->name('patients.home');
+    Route::post('/appointments/{id}/cancel', [AppointmentController::class,'cancel'])->name('appointments.cancel');
+    
 
 });
 
@@ -75,6 +80,10 @@ Route::middleware(['web', 'auth', 'checkRole:admin'])->group(function () {
     Route::resource('doctors', DoctorController::class);
     Route::resource('appointments', AppointmentController::class);
     
+    // Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
     Route::get('/get-doctors/{department}', [AppointmentController::class, 'getDoctors']);
     Route::get('/get-available-hours/{doctorId}/{date}', [AppointmentController::class, 'getAvailableHours']);
     Route::get('/available-hours/create', [AvailableHourController::class, 'create'])->name('available-hours.create');
@@ -83,10 +92,7 @@ Route::middleware(['web', 'auth', 'checkRole:admin'])->group(function () {
     Route::post('/available-hours/store', [AvailableHourController::class, 'store'])->name('available-hours.store');
 Route::post('/available-hours/store', [AvailableHourController::class, 'store'])->name('available-hours.store');
 
-    Route::post('appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->name('appointments.confirm');
-    Route::post('appointments/cancel/{id}', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
-    
-    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+  
 
 });
 
@@ -103,7 +109,7 @@ Route::middleware(['web', 'auth', 'checkRole:patient'])->group(function () {
 
 
     Route::get('/get-doctors/{department}', [AppointmentController::class, 'getDoctors']);
-    Route::post('appointments/cancel/{id}', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    // Route::post('/appointments/{id}/cancel', [AppointmentController::class,'cancel'])->name('appointments.cancel');
     Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 
 });
@@ -118,6 +124,7 @@ Route::middleware(['web', 'auth', 'checkRole:doctor'])->group(function () {
  Route::resource('patients', UserController::class);
     Route::resource('doctors', DoctorController::class);
     Route::resource('appointments', AppointmentController::class);
+
     Route::get('/get-doctors/{department}', [AppointmentController::class, 'getDoctors']);
     Route::get('/available-hours/{doctorId}', [AvailableHourController::class, 'getAvailableHoursForDoctor']);
     Route::get('/available-hours/create', [AvailableHourController::class, 'create'])->name('available-hours.create');

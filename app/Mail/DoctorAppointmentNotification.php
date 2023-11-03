@@ -19,11 +19,15 @@ class DoctorAppointmentNotification extends Mailable
     public $patient_name;
     public $doc_name;
     public $appointment_date;
-    public function __construct($patient_name, $appointment_date, $doc_name)
+    public $start_time;
+    public $end_time;
+    public function __construct($patient_name, $appointment_date, $doc_name, $start_time, $end_time)
     {
         $this->patient_name = $patient_name;
         $this->doc_name = $doc_name;
         $this->appointment_date = $appointment_date;
+        $this->start_time = $start_time;
+        $this->end_time = $end_time;
     }
 
     /**

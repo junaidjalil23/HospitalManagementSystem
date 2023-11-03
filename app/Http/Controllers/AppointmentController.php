@@ -25,39 +25,62 @@ class AppointmentController extends Controller
 
     return view('appointments.listing', compact('appointments'));
     }
+    public function cancel($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $availableHourId = $appointment->available_hour_id;
+
+        // Retrieve the actual AvailableHour model
+        $availableHour = AvailableHour::find($availableHourId);
+
+        // Update the is_booked column to 0 (not booked)
+        if ($availableHour) {
+            $availableHour->update(['is_booked' => 0]);
+        }
+        $appointment->status = 'canceled';
+        $appointment->save();
+        
+        return redirect()->route('appointments.index')->with('warning', 'Appointment canceled successfully');
+    }
+    
+    
     public function confirm($id)
     {
         $appointment = Appointment::findOrFail($id);
+        $availableHourId = $appointment->available_hour_id;
 
-    $appointment->status = 'confirmed';
-    $appointment->save();
+        // Retrieve the actual AvailableHour model
+        $availableHour = AvailableHour::find($availableHourId);
+
+        // Update the is_booked column to 0 (not booked)
+        if ($availableHour) {
+            $availableHour->update(['is_booked' => 1]);
+        }
+        $appointment->status = 'confirmed';
+        $appointment->save();
 
     Mail::to($appointment->patient->email)
         ->send(new PatientAppointmentConfirmation(
             $appointment->patient->patient_name,
             $appointment->appointment_date,
-            $appointment->doctor->doc_name
+            $appointment->doctor->doc_name,
+            $appointment->availableHour->start_time,
+            $appointment->availableHour->end_time
         ));
 
     Mail::to($appointment->doctor->doc_email)
         ->send(new DoctorAppointmentNotification(
             $appointment->patient->patient_name,
             $appointment->appointment_date,
-            $appointment->doctor->doc_name
+            $appointment->doctor->doc_name,
+            $appointment->availableHour->start_time,
+            $appointment->availableHour->end_time
         ));
 
         return redirect()->route('appointments.index')->with('success', 'Appointment confirmed successfully');
     }
 
-    public function cancel($id)
-    {
 
-        $appointment = Appointment::findOrFail($id);
-        $appointment->status = 'canceled';
-        $appointment->save();
-        return redirect()->route('appointments.index')->with('warning', 'Appointment canceled');
-    }
-    
     public function destroy($id)
 {
         // Find the appointment by ID
@@ -102,6 +125,7 @@ class AppointmentController extends Controller
             'department' => $request->input('department'),
             'appointment_date' => $request->input('appointment_date'),
             'description' => $request->input('description'),
+            'available_hour_id' => $request->input('available_hour'),
 
         ]);
 

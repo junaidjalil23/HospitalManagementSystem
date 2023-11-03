@@ -17,6 +17,7 @@ class Appointment extends Model
         'patient_id',
         'doc_id',
         'appointment_date',
+        'available_hour_id',
     ];
     public function setAppointmentDateAttribute($value)
     {
@@ -31,4 +32,9 @@ class Appointment extends Model
     {
         return $this->belongsTo(Doctor::class, 'doc_id', 'doc_id');
     }
+    public function availableHour()
+    {
+        return $this->hasOne(AvailableHour::class, 'id', 'available_hour_id');
+    }
+
 }
